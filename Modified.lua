@@ -1245,10 +1245,9 @@ local LastCommand = {}
 Guis = {}
 ParentGui = function(Gui, Parent)
     Gui.Name = sub(gsub(GenerateGUID(Services.HttpService, false), '-', ''), 1, random(25, 30))
-    ProtectInstance(Gui)
+    ProtectInstance(Gui);
     if (syn and syn.protect_gui) then syn.protect_gui(Gui); end -- for preload
     Gui.Parent = Parent or Services.CoreGui
-    Gui.Enabled = false -- Set the Enabled property to false
     Guis[#Guis + 1] = Gui
     return Gui
 end
@@ -5343,6 +5342,25 @@ AddCommand("chat", {}, "sends a message", {"1"}, function(Caller, Args)
     return "chatted " .. toChat
 end)
 
+AddCommand("spam", {"spamchat", "spamc"}, "spams the chat with a message", {"1"}, function(Caller, Args, CEnv)
+    local WaitTime = CEnv.WaitTime or tonumber(Args[#Args]);
+    if (tonumber(Args[#Args])) then
+        Args = pack(unpack(Args, 1, #Args - 1));
+        Args.n = nil
+    end
+    local Message = concat(Args, " ");
+    CEnv.Spamming = true
+    CEnv.WaitTime = WaitTime or 1
+    local ChatRemote = Services.ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest
+    CThread(function()
+        while (CEnv.Spamming) do
+            ChatRemote.FireServer(ChatRemote, Message, "All");
+            wait(CEnv.WaitTime);
+        end
+    end)()
+    return format("spamming %s with a delay of %d", Message, CEnv.WaitTime);
+end)
+
 AddCommand("spamspeed", {"sspeed"}, "sets your spam speed", {"1"}, function(Caller, Args)
     local Speed = tonumber(Args[1]);
     if (not Speed) then
@@ -5350,6 +5368,37 @@ AddCommand("spamspeed", {"sspeed"}, "sets your spam speed", {"1"}, function(Call
     end
     LoadCommand("spam").CmdEnv.WaitTime = Speed
     return "spamspeed set at " .. Speed
+end)
+
+AddCommand("silentchat", {"chatsilent"}, "sends a message but will not show in the chat (fires .Chatted signals)", {"1"}, function(Caller, Args)
+    local toChat = concat(Args, " ");
+    Services.Players.Chat(Services.Players, toChat);
+    return "silent chatted " .. toChat
+end)
+
+AddCommand("spamsilentchat", {"spamchatlogs"}, "spams sending messages with what you want", {"1"}, function(Caller, Args, CEnv)
+    local toChat = concat(Args, " ");
+    local ChatMsg = Services.Players.Chat
+    for i = 1, 100 do
+        ChatMsg(Services.Players, toChat);
+    end
+    AddConnection(CConnect(Players.Chatted, function()
+        for i = 1, 30 do
+            ChatMsg(Players, toChat);
+        end
+    end), CEnv);
+    return "spamming chat sliently"
+end)
+
+AddCommand("unspamsilentchat", {"nospamsilentchat", "unspamchatlogs", "nospamchatlogs", "unspamchat", "unspam"}, "stops the spam of chat", {}, function()
+    local Spamming = LoadCommand("spamsilentchat").CmdEnv
+    local Spamming1 = LoadCommand("spam").CmdEnv
+    if (not next(Spamming) and not next(Spamming1)) then
+        return "you are not spamming chat"
+    end
+    DisableAllCmdConnections("spamsilentchat");
+    Spamming1.Spamming = false
+    return "stopped spamming chat"
 end)
 
 AddCommand("advertise", {}, "advertises the script", {}, function()
@@ -8434,7 +8483,6 @@ _L.LatestCommit = JSONDecode(Services.HttpService, game.HttpGetAsync(game, "http
 wait(1);
 Utils.Notify(LocalPlayer, "Newest Update", format("%s - %s", _L.LatestCommit.commit.message, _L.LatestCommit.commit.author.name));
 
-
 -- Define the setprefix function
 local function SetPrefixCommand(Caller, Args)
     local PrefixToSet = Args[1]
@@ -8449,5 +8497,3 @@ end
 
 -- Automatically run the setprefix command with the argument "."
 SetPrefixCommand(game.Players.LocalPlayer, { "." })
-
--- Define AddCommand and other functions as needed
