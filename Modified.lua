@@ -2280,12 +2280,12 @@ do
         Utils.Tween(Clone, "Sine", "Out", .25, {
             TextTransparency = 0
         })
-    
+ 
         Console.Frame.List.CanvasSize = UDim2.fromOffset(0, Console.Frame.List.UIListLayout.AbsoluteContentSize.Y);
         AmountWarn = AmountWarn + 1
         Utils.Notify(Plr, "Warning", Text);
-    end
-    
+    end     
+
     Utils.Error = function(Text, Caller, FromNotif)
         local TimeOutputted = os.date("%X");
         local Clone = Clone(UI.MessageOut);
@@ -2505,7 +2505,7 @@ local ExecuteCommand = function(Name, Args, Caller)
             sett(Context);
         end
     else
-        Utils.Warn("couldn't find the command " .. Name, Caller);
+       warn("")
     end
 end
 
