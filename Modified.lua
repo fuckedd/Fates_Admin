@@ -5342,25 +5342,6 @@ AddCommand("chat", {}, "sends a message", {"1"}, function(Caller, Args)
     return "chatted " .. toChat
 end)
 
-AddCommand("spam", {"spamchat", "spamc"}, "spams the chat with a message", {"1"}, function(Caller, Args, CEnv)
-    local WaitTime = CEnv.WaitTime or tonumber(Args[#Args]);
-    if (tonumber(Args[#Args])) then
-        Args = pack(unpack(Args, 1, #Args - 1));
-        Args.n = nil
-    end
-    local Message = concat(Args, " ");
-    CEnv.Spamming = true
-    CEnv.WaitTime = WaitTime or 1
-    local ChatRemote = Services.ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest
-    CThread(function()
-        while (CEnv.Spamming) do
-            ChatRemote.FireServer(ChatRemote, Message, "All");
-            wait(CEnv.WaitTime);
-        end
-    end)()
-    return format("spamming %s with a delay of %d", Message, CEnv.WaitTime);
-end)
-
 AddCommand("spamspeed", {"sspeed"}, "sets your spam speed", {"1"}, function(Caller, Args)
     local Speed = tonumber(Args[1]);
     if (not Speed) then
