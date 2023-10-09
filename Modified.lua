@@ -2498,7 +2498,6 @@ local ExecuteCommand = function(Name, Args, Caller)
         end, function(Err)
             if (Debug) then
                 Utils.Error(format("[FA CMD Error]: Command = '%s' Traceback = '%s'", Name, debug.traceback(Err)), Caller);
-                Utils.Notify(Caller, "Error", format("error in the '%s' command, more info shown in console", Name));
             end
         end);
         if (Command.IsPlugin and sett and PluginConf.SafePlugins and Context) then
