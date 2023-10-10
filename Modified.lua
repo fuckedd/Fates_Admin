@@ -21,8 +21,6 @@ do
         local UserInputService = GetService(game, "UserInputService");
         local CommandBarPrefix = GetConfig().CommandBarPrefix
         local StringKeyCode = UserInputService.GetStringForKeyCode(UserInputService, Enum.KeyCode[CommandBarPrefix]);
-        return Notify(nil, "Loaded", "fates admin is already loaded... use 'killscript' to kill", nil),
-        Notify(nil, "Your Prefix is", string.format("%s (%s)", StringKeyCode, CommandBarPrefix));
     end
 end
 
@@ -8454,21 +8452,17 @@ getgenv().F_A = {
     GetConfig = GetConfig
 }
 
-Utils.Notify(LocalPlayer, "Loaded", format("script loaded in %.3f seconds", (tick()) - _L.start));
-Utils.Notify(LocalPlayer, "Welcome", "'cmds' to see all of the commands, 'config' to customise the script");
 if (debug.info(2, "f") == nil) then
     Utils.Notify(LocalPlayer, "Outdated Script", "use the loadstring to get latest updates (https://fatesc/fates-admin)", 10);
 end
 _L.LatestCommit = JSONDecode(Services.HttpService, game.HttpGetAsync(game, "https://api.github.com/repos/fatesc/fates-admin/commits?per_page=1&path=main.lua"))[1]
 wait(1);
-Utils.Notify(LocalPlayer, "Newest Update", format("%s - %s", _L.LatestCommit.commit.message, _L.LatestCommit.commit.author.name));
 
 -- Define the setprefix function
 local function SetPrefixCommand(Caller, Args)
     local PrefixToSet = Args[1]
     if string.match(PrefixToSet, "%A") then
         Prefix = PrefixToSet
-        Utils.Notify(Caller, "Command", string.format("Your new prefix is now '%s'", PrefixToSet))
         return "Use the command saveprefix to save your prefix"
     else
         return "Prefix must be a symbol"
