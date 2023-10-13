@@ -2666,16 +2666,16 @@ local humanoid = character:WaitForChild("Humanoid")
 AddCommand("rpname", {"rpn", "rp"}, "changes your rp name", {}, function(Caller, Args, CEnv)
     local args = {
         [1] = 65,
-        [2] = Args[1]
+        [2] = table.concat(Args, " ")
     }
     game:GetService("ReplicatedStorage"):WaitForChild("Connection"):InvokeServer(unpack(args))
     task.wait(0.1)
     local args = {
         [1] = 149,
-        [2] = Args[1]
+        [2] = table.concat(Args, " ")
     }
     game:GetService("ReplicatedStorage"):WaitForChild("Connection"):InvokeServer(unpack(args))                   
-    return "Your RP name has been changed to " .. Args[1]
+    return "Your RP name has been changed to " .. table.concat(Args, " ")
 end)
 
 AddCommand("walkspeed", {"ws", "speed"}, "changes your walkspeed to the second argument", {}, function(Caller, Args, CEnv)
