@@ -2659,11 +2659,31 @@ AddCommand("commandcount", {"cc"}, "shows you how many commands there is in fate
     end)))
 end)
 
+local player = game.Players.LocalPlayer
+local character = player.Character
+local humanoid = character:WaitForChild("Humanoid")
+
+AddCommand("rpname", {"rpn", "rp"}, "changes your rp name", {}, function(Caller, Args, CEnv)
+    local args = {
+        [1] = 65,
+        [2] = Args[1]
+    }
+    game:GetService("ReplicatedStorage"):WaitForChild("Connection"):InvokeServer(unpack(args))
+    task.wait(0.1)
+    local args = {
+        [1] = 149,
+        [2] = Args[1]
+    }
+    game:GetService("ReplicatedStorage"):WaitForChild("Connection"):InvokeServer(unpack(args))                   
+    return "Your RP name has been changed to " .. Args[1]
+end)
+
 AddCommand("walkspeed", {"ws", "speed"}, "changes your walkspeed to the second argument", {}, function(Caller, Args, CEnv)
     local Humanoid = GetHumanoid();
+    local walkSpeed = tonumber(Args[1])
     CEnv[1] = Humanoid.WalkSpeed
     SpoofProperty(Humanoid, "WalkSpeed");
-    Humanoid.WalkSpeed = tonumber(Args[1]) or 16
+    Humanoid.WalkSpeed = walkSpeed
     return "your walkspeed is now " .. Humanoid.WalkSpeed
 end)
 
