@@ -2680,7 +2680,7 @@ end)
 
 AddCommand("walkspeed", {"ws", "speed"}, "changes your walkspeed to the second argument", {}, function(Caller, Args, CEnv)
     local Humanoid = GetHumanoid();
-    local walkSpeed = tonumber(Args[1]) or 50
+    local walkSpeed = tonumber(Args[1])
     CEnv[1] = Humanoid.WalkSpeed
     SpoofProperty(Humanoid, "WalkSpeed");
     Humanoid.WalkSpeed = walkSpeed
