@@ -2684,6 +2684,7 @@ AddCommand("walkspeed", {"ws", "speed"}, "changes your walkspeed to the second a
     CEnv[1] = Humanoid.WalkSpeed
     SpoofProperty(Humanoid, "WalkSpeed");
     Humanoid.WalkSpeed = walkSpeed
+    updateValues(Humanoid.WalkSpeed, humanoid.JumpPower, workspace.Gravity, humanoid.HipHeight, workspace.Camera.FieldOfView)
     walkSpeedSlider:SetValue(humanoid.WalkSpeed)
     return "your walkspeed is now " .. Humanoid.WalkSpeed
 end)
