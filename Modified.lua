@@ -5441,7 +5441,7 @@ AddCommand("rejoin", {"rj"}, "rejoins the game you're currently in", {}, functio
     end
 end)
 
-AddCommand("serverhop", {"sh"}, "switches servers (optional: min, max (default: max))", {{"min", "max"}}, function(Caller, Args)
+AddCommand("serverhop", {"sh", "shop"}, "switches servers (optional: min, max (default: max))", {{"min", "max"}}, function(Caller, Args)
     if (Caller == LocalPlayer) then
         Utils.Notify(Caller or LocalPlayer, "Command", "Looking for servers...");
         local order = ""
@@ -8471,12 +8471,6 @@ getgenv().F_A = {
     PluginLibrary = PluginLibrary,
     GetConfig = GetConfig
 }
-
-if (debug.info(2, "f") == nil) then
-    Utils.Notify(LocalPlayer, "Outdated Script", "use the loadstring to get latest updates (https://fatesc/fates-admin)", 10);
-end
-_L.LatestCommit = JSONDecode(Services.HttpService, game.HttpGetAsync(game, "https://api.github.com/repos/fatesc/fates-admin/commits?per_page=1&path=main.lua"))[1]
-wait(1);
 
 -- Define the setprefix function
 local function SetPrefixCommand(Caller, Args)
