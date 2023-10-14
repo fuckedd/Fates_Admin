@@ -2678,6 +2678,12 @@ AddCommand("rpname", {"rpn", "rp"}, "changes your rp name", {}, function(Caller,
     return "Your RP name has been changed to " .. table.concat(Args, " ")
 end)
 
+AddCommand("iq", {"brain"}, "guesses people's IQ", {}, function(Caller, Args, CEnv)
+    local iq = math.random(1, 200)
+    local name = table.concat(Args, " ")
+    return name .. "'s IQ is " .. iq
+end)
+
 AddCommand("walkspeed", {"ws", "speed"}, "changes your walkspeed to the second argument", {}, function(Caller, Args, CEnv)
     local Humanoid = GetHumanoid();
     local walkSpeed = tonumber(Args[1])
