@@ -2694,8 +2694,6 @@ AddCommand("jumppower", {"jp"}, "changes your jumpower to the second argument", 
     SpoofProperty(Humanoid, "UseJumpPower");
     Humanoid.UseJumpPower = true
     Humanoid.JumpPower = tonumber(Args[1]) or 50
-    jumpPowerSlider:SetValue(Humanoid.JumpPower)
-    jumpPowerSlider.Callback(Humanoid.JumpPower)
     return "your jumppower is now " .. Humanoid.JumpPower
 end)
 
