@@ -2687,8 +2687,6 @@ AddCommand("walkspeed", {"ws", "speed"}, "changes your walkspeed to the second a
     return "your walkspeed is now " .. Humanoid.WalkSpeed
 end)
 
-walkSpeedSlider:SetValue(walkSpeed)
-
 AddCommand("jumppower", {"jp"}, "changes your jumpower to the second argument", {}, function(Caller, Args, CEnv)
     local Humanoid = GetHumanoid();
     CEnv[1] = Humanoid.JumpPower
