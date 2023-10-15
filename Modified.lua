@@ -2663,7 +2663,7 @@ local player = game.Players.LocalPlayer
 local character = player.Character
 local humanoid = character:WaitForChild("Humanoid")
 
-AddCommand("rpname", {"rpn", "rp"}, "changes your rp name", {}, function(Caller, Args, CEnv)
+AddCommand("rpname", {"rpn", "rp", "bio"}, "changes your rp name", {}, function(Caller, Args, CEnv)
     local args = {
         [1] = 65,
         [2] = table.concat(Args, " ")
@@ -2680,8 +2680,13 @@ end)
 
 AddCommand("iq", {"brain"}, "guesses people's IQ", {}, function(Caller, Args, CEnv)
     local iq = math.random(1, 200)
-    local name = table.concat(Args, " ")
-    return name .. "'s IQ is " .. iq
+    local name = string.lower(string.sub(table.concat(Args, " "), 1, 3))
+    for _, player in pairs(game.Players:GetPlayers()) do
+        if string.lower(string.sub(player.DisplayName, 1, 3)) == name then
+            return player.DisplayName .. "'s IQ is " .. iq
+        end
+    end
+    return "Player not found"
 end)
 
 AddCommand("walkspeed", {"ws", "speed"}, "changes your walkspeed to the second argument", {}, function(Caller, Args, CEnv)
@@ -4915,7 +4920,7 @@ AddCommand("unspin", {}, "unspins your character", {}, function(Caller, Args)
     return "stopped spinning"
 end)
 
-AddCommand("goto", {"to"}, "teleports yourself to the other character", {3, "1"}, function(Caller, Args)
+AddCommand("goto", {"to", "tp"}, "teleports yourself to the other character", {3, "1"}, function(Caller, Args)
     local Target = GetPlayer(Args[1]);
     local Delay = tonumber(Args[2]);
     for i, v in next, Target do
@@ -4930,7 +4935,7 @@ AddCommand("goto", {"to"}, "teleports yourself to the other character", {3, "1"}
     end
 end)
 
-AddCommand("loopgoto", {"loopto"}, "loop teleports yourself to the other character", {3, "1"}, function(Caller, Args, CEnv)
+AddCommand("loopgoto", {"loopto", "lt"}, "loop teleports yourself to the other character", {3, "1"}, function(Caller, Args, CEnv)
     local Target = GetPlayer(Args[1])[1]
     local Connection = CConnect(Heartbeat, function()
         GetRoot().CFrame = GetRoot(Target).CFrame * CFrameNew(0, 0, 2);
@@ -4942,7 +4947,7 @@ AddCommand("loopgoto", {"loopto"}, "loop teleports yourself to the other charact
     return "now looping to " .. Target.name
 end)
 
-AddCommand("unloopgoto", {"unloopto"}, "removes loop teleportation to the other character", {}, function(Caller)
+AddCommand("unloopgoto", {"unloopto", "ult"}, "removes loop teleportation to the other character", {}, function(Caller)
     local Looping = LoadCommand("loopgoto").CmdEnv;
     if (not next(Looping)) then
         return "you aren't loop teleporting to anyone"
